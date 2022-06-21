@@ -1,1 +1,1 @@
-# bl-location
+# bl-location init
