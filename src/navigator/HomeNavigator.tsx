@@ -1,7 +1,6 @@
-import {
-  Home
-} from '../pages';
+import { Home, Welcome } from "../pages";
 
 export default {
-  Home
+  Home,
+  Welcome,
 };

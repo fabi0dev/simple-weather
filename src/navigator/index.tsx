@@ -12,7 +12,7 @@ const Navigator = () => {
         screenOptions={{
           headerMode: false,
         }}
-        initialRouteName="Home"
+        initialRouteName="Welcome"
       >
         {Object.entries(HomeNavigator).map(([nameScreen, Component]) => {
           return (

@@ -15,9 +15,9 @@ export const theme = {
     xxl: 80,
   },
   colors: {
+    primary: '#65bae0',
     primaryDarkest: '#4107B8',
     primaryDark: '#5B1BE0',
-    primary: '#702DFA',
     primaryLight: '#935EFF',
     primaryLightest: '#FAF7FF',
 

@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 interface ContainerProps {
-  children: JSX.Element;
+  children: any;
 }
 
 export const Container = ({ children }: ContainerProps): JSX.Element => {
