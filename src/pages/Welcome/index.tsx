@@ -6,18 +6,17 @@ import { Typography } from "@components/Typography";
 import { Button } from "@components/Button/Button";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "@themes/default";
-import { saveDataLocation } from "../../Storage/Weather";
+import { getDataLocation, saveDataLocation } from "../../Storage/Weather";
+import { Home } from "../Home";
 
 export const Welcome = (): JSX.Element => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState("");
   const [loadingGetLocation, setLoadingGetLocation] = useState(false);
+  const [locationSetted, setLocationSetted] = useState(true);
   const navigation = useNavigation();
 
-  /* "latitude": -9.807443660663354,
-    "longitude": -49.22114472031816, */
-
-  const getDataLocation = async () => {
+  const getLocationUser = async () => {
     setLoadingGetLocation(true);
 
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -36,6 +35,23 @@ export const Welcome = (): JSX.Element => {
     setLoadingGetLocation(false);
     navigation.navigate("Home");
   };
+
+  const checkLocation = async () => {
+    setLoadingGetLocation(true);
+    const location = await getDataLocation();
+
+    if (location != null) {
+      setLocationSetted(true);
+    }
+  };
+
+  useEffect(() => {
+    checkLocation();
+  }, []);
+
+  if (locationSetted) {
+    return <Home />;
+  }
 
   return (
     <Box p={"xxxs"} pt={"sm"} flex={1} bg={"blueDark"}>
@@ -69,14 +85,11 @@ export const Welcome = (): JSX.Element => {
           {loadingGetLocation && (
             <Box>
               <ActivityIndicator color={theme.colors.base} size={17} />
-              <Typography color={"base"} mt={"qm"} fontSize={12}>
-                Aguarde um instante..
-              </Typography>
             </Box>
           )}
 
           {!loadingGetLocation && (
-            <Button onPress={getDataLocation} variant="primary">
+            <Button onPress={getLocationUser} variant="primary">
               Começar
             </Button>
           )}

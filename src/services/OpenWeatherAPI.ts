@@ -5,12 +5,12 @@ const api = axios.create({
   validateStatus: status => true,
 });
 
-const OpenWeatherAPI = async () => {
+const getWeather = async (lat, lon) => {
   try {
-    const { data } = await api.get('/data/2.5/forecast', {
+    const { data } = await api.get('/data/2.5/weather', {
       params: {
-        lat : '-9.807443660663354',
-        lon : '-49.22114472031816',
+        lat,
+        lon,
         appid : '93c14486890b0ebb887e0add8cf0b9e2',
         lang : 'pt_br',
         units : 'metric',
@@ -21,7 +21,28 @@ const OpenWeatherAPI = async () => {
   } catch (error: any) {
     //error
   }
-
 }
 
-export default OpenWeatherAPI;
+const getForecast = async (lat, lon) => {
+  try {
+    const { data } = await api.get('/data/2.5/forecast', {
+      params: {
+        lat,
+        lon,
+        appid : '93c14486890b0ebb887e0add8cf0b9e2',
+        lang : 'pt_br',
+        units : 'metric',
+        mode: "json"
+      }
+    });
+
+    return data;
+  } catch (error: any) {
+    //error
+  }
+}
+
+export {
+  getWeather,
+  getForecast
+};

@@ -16,40 +16,10 @@ export const theme = {
   },
   colors: {
     primary: '#65bae0',
-    primaryDarkest: '#4107B8',
-    primaryDark: '#5B1BE0',
-    primaryLight: '#935EFF',
-    primaryLightest: '#FAF7FF',
-
-    secondaryDarkest: '#509906',
-    secondaryDark: '#7FDD20',
-    secondary: '#99FF33',
-    secondaryLight: '#C7FF8F',
-    secondaryLightest: '#F5FFEA',
-
-    orangeDarkest: '#CC8908',
-    orangeDark: '#E09A12',
-    orange: '#F5A916',
-    orangeLight: '#FCBD43',
-    orangeLightest: '#FFF8E6',
-
-    blueDarkest: '#1166BB',
-    blueDark: '#207FDD',
     blue: '#3399FF',
+    blueDark: '#175b9f',
     blueLight: '#BDDEFF',
     blueLightest: '#EAF5FF',
-
-    pinkDarkest: '#770059',
-    pinkDark: '#BB1191',
-    pink: '#FF33CC',
-    pinkLight: '#FF8FE3',
-    pinkLightest: '#FFEAFA',
-
-    redDarkest: '#B81616',
-    redDark: '#E02222',
-    red: '#FF2E2E',
-    redLight: '#FB9E9E',
-    redLightest: '#FFEDED',
 
     lilacDarkest: '#B8B8CC',
     lilacDark: '#CECEE0',
@@ -65,6 +35,7 @@ export const theme = {
     grey06: '#B2B0BF',
     grey07: '#8B8CB2',
     base: '#FFF',
+    base2: 'rgba(255,255,255, .5)',
   },
   fonts: {
     heading: 'Poppins Bold',
