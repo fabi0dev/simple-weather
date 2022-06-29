@@ -26,21 +26,20 @@ const touchableButtonVariants = variant<
   prop: "variant",
   variants: {
     primary: {
-      backgroundColor: "base",
+      backgroundColor: "primary",
     },
   },
 });
 
 export const TouchableButton = styled(TouchableOpacity)<TouchableButtonProps>`
   ${() => ({
-    borderRadius: 20,
+    borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 40,
-    paddingRight: 40,
+    padding: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
   })}
   ${touchableButtonVariants}
   ${space}
@@ -58,7 +57,8 @@ const textButtonVariants = variant<TextButtonProps, TouchableButtonTypes>({
   prop: "type",
   variants: {
     primary: {
-      color: "blueDark",
+      color: "base",
+      fontSize: 18,
     },
   },
 });

@@ -51,9 +51,15 @@ export const Forecast = ({
 
   const ItemDay = ({ hour, temp, main }) => {
     return (
-      <Box width={"33%"} pt={"qm"} pb={"qm"}>
+      <Box
+        borderRadius={8}
+        width={"32%"}
+        pt={"cake"}
+        pb={"cake"}
+        bg={"rgba(0,0,0, .1)"}
+      >
         <Box mb={"prim"}>
-          <Box alignItems={"center"} mb={"cake"}>
+          <Box alignItems={"center"} mb={"prim"}>
             <Typography color={"base"} fontSize={18}>
               {hour}h
             </Typography>
@@ -61,13 +67,13 @@ export const Forecast = ({
 
           <Box alignItems={"center"} mb={"cake"}>
             <Image
-              style={{ width: 30, height: 30 }}
+              style={{ width: 50, height: 50 }}
               source={getImgMain(main, hour)}
             />
           </Box>
 
           <Box alignItems={"center"}>
-            <Typography color={"base"} variant={"medium"} fontSize={18}>
+            <Typography color={"base"} fontSize={22}>
               {parseInt(temp)}º
             </Typography>
           </Box>
@@ -108,21 +114,21 @@ export const Forecast = ({
 
   return (
     <Box>
-      <Box p={"nano"} borderRadius={"nano"} bg={"rgba(0,0,0, .1)"} mt={"xx"}>
-        <Box mb={"qm"}>
-          <Typography
-            fontSize={13}
-            fontWeight={"bold"}
-            variant={"medium"}
-            color={"blueLight"}
-          >
-            PREVISÃO DAS PRÓXIMAS HORAS
-          </Typography>
-        </Box>
+      <Box mt={"xx"} mb={"nano"}>
+        <Typography
+          fontSize={13}
+          fontWeight={"bold"}
+          variant={"medium"}
+          color={"blueLight"}
+        >
+          PREVISÃO DAS PRÓXIMAS HORAS
+        </Typography>
+      </Box>
 
+      <Box borderRadius={"nano"}>
         <Box flexDirection={"row"} justifyContent={"space-between"}>
           {list.map((itemWeather, key) => {
-            if (key > 3) {
+            if (key >= 3) {
               return;
             }
 
@@ -141,25 +147,24 @@ export const Forecast = ({
         </Box>
       </Box>
 
+      <Box mt={"xs"} mb={"nano"}>
+        <Typography
+          fontSize={13}
+          fontWeight={"bold"}
+          variant={"medium"}
+          color={"blueLight"}
+        >
+          PREVISÃO DOS PRÓXIMOS DIAS
+        </Typography>
+      </Box>
+
       <Box
         p={"nano"}
         borderRadius={"nano"}
         flexDirection={"row"}
         flexWrap={"wrap"}
         bg={"rgba(0,0,0, .1)"}
-        mt={"xx"}
       >
-        <Box mb={"qm"}>
-          <Typography
-            fontSize={13}
-            fontWeight={"bold"}
-            variant={"medium"}
-            color={"blueLight"}
-          >
-            PREVISÃO DOS PRÓXIMOS DIAS
-          </Typography>
-        </Box>
-
         {list.map((itemWeather, key) => {
           let { dt, main, weather } = itemWeather;
           let dateWeather = getDate(new Date(dt * 1000));

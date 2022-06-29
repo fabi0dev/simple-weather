@@ -37,7 +37,6 @@ export const Welcome = (): JSX.Element => {
   };
 
   const checkLocation = async () => {
-    setLoadingGetLocation(true);
     const location = await getDataLocation();
 
     if (location != null) {
@@ -49,25 +48,33 @@ export const Welcome = (): JSX.Element => {
     checkLocation();
   }, []);
 
-  if (locationSetted) {
+  /*  if (locationSetted) {
     return <Home />;
-  }
+  } */
 
   return (
-    <Box p={"xxxs"} pt={"sm"} flex={1} bg={"blueDark"}>
-      <Box mt={"xs"} alignItems="center">
-        <Box mt={"xs"} alignItems={"center"}>
+    <Box
+      p={"xxxs"}
+      alignItems="center"
+      justifyContent={"center"}
+      pt={"sm"}
+      flex={1}
+      bg={"lilacLight"}
+    >
+      <Box alignItems={"center"}>
+        <Box mb={"nano"}>
           <Image
-            style={{ width: 200, height: 200 }}
-            source={require("@assets/images/cloudy.png")}
+            style={{ maxWidth: 300, maxHeight: 300 }}
+            source={require("@assets/images/cloud_transfer.png")}
           />
         </Box>
 
         <Typography
           textAlign={"center"}
           fontWeight={"bold"}
-          fontSize={25}
-          color={"base"}
+          fontSize={30}
+          color={"base3"}
+          variant={"medium"}
         >
           Olá, que bom te ver!
         </Typography>
@@ -75,8 +82,8 @@ export const Welcome = (): JSX.Element => {
         <Typography
           textAlign={"center"}
           mt={"cake"}
-          fontSize={15}
-          color={"base"}
+          fontSize={16}
+          color={"grey02"}
         >
           Agora você tem a previsão do tempo na sua mão
         </Typography>
@@ -84,15 +91,16 @@ export const Welcome = (): JSX.Element => {
         <Box mt={"xl"}>
           {loadingGetLocation && (
             <Box>
-              <ActivityIndicator color={theme.colors.base} size={17} />
+              <ActivityIndicator color={theme.colors.primary} size={17} />
             </Box>
           )}
 
-          {!loadingGetLocation && (
-            <Button onPress={getLocationUser} variant="primary">
-              Começar
-            </Button>
-          )}
+          <Button
+            onPress={() => navigation.navigate("NewLocation")}
+            variant="primary"
+          >
+            Começar
+          </Button>
 
           <Typography mt={"xx"} color={"base"}>
             {errorMsg}

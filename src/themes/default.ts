@@ -1,5 +1,6 @@
 export const theme = {
   space: {
+    none: 0,
     quarck: 1,
     prim: 3,
     qm: 5,
@@ -15,7 +16,7 @@ export const theme = {
     xxl: 80,
   },
   colors: {
-    primary: '#65bae0',
+    primary: '#18C4FF',
     blue: '#3399FF',
     blueDark: '#175b9f',
     blueLight: '#BDDEFF',
@@ -24,8 +25,7 @@ export const theme = {
     lilacDarkest: '#B8B8CC',
     lilacDark: '#CECEE0',
     lilac: '#D8D8E8',
-    lilacLight: '#E9E9F5',
-    lilacLightest: '#F6F6F8',
+    lilacLight: '#f9f9f9',
 
     grey01: '#33303E',
     grey02: '#4E4B59',
@@ -36,6 +36,7 @@ export const theme = {
     grey07: '#8B8CB2',
     base: '#FFF',
     base2: 'rgba(255,255,255, .5)',
+    base3: '#232532',
   },
   fonts: {
     heading: 'Poppins Bold',

@@ -21,11 +21,14 @@ import { ImgWeather } from "./ImgWeather";
 import { Touchable } from "@components/Touchable";
 import { showLocation } from "react-native-map-link";
 import { Forecast } from "./Forecast";
+import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 export const Home = (): JSX.Element => {
   const [wheatherCurrent, setWheatherCurrent] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   const getWheather = async (reload = false, viewLoading = true) => {
     const data = await getDataWeather();
@@ -34,10 +37,7 @@ export const Home = (): JSX.Element => {
     }
 
     if (data == null || reload === true) {
-      const responseWheather = await getForecast(
-        "-9.807443660663354",
-        "-49.22114472031816"
-      );
+      const responseWheather = await getForecast("-11.732670", "-49.074699");
 
       saveDataWeather(responseWheather);
       setWheatherCurrent(responseWheather);
@@ -65,13 +65,39 @@ export const Home = (): JSX.Element => {
     });
   };
 
-  const getColorBg = () => {
-    const d = new Date();
+  const getColorBg = (wheatherCurrent) => {
+    if (wheatherCurrent != null) {
+      //const main = wheatherCurrent.list[0].weather[0].main;
+      const main = "Clear";
+      const d = new Date();
+      /* const d = new Date();
 
-    if (d.getHours() > 18 || d.getHours() < 6) {
-      return "blueDark";
+      if (d.getHours() > 18 || d.getHours() < 6) {
+        return "blueDark";
+      } else {
+        return "blue";
+      } */
+      switch (main) {
+        case "Clear":
+          if (d.getHours() >= 18 || d.getHours() < 6) {
+            return ["#007bc5", "#004066"];
+          } else {
+            return ["#1baaff", "#0089d9"];
+          }
+        case "Thunderstorm" || "Rain":
+          return ["#395aa7", "#2a3b64"];
+        case "Drizzle":
+          return ["#39728d", "#1f4a5e"];
+        case "Clouds":
+          return ["#6198fd", "#1a3870"];
+        default:
+          return ["#26a5d3", "#0f3c78"];
+      }
+
+      return ["#26d3ba", "#0f5c78"];
+      //return ["#4c669f", "#3b5998", "#192f6a"];
     } else {
-      return "blue";
+      return ["#26d3ba", "#0f5c78"];
     }
   };
 
@@ -112,27 +138,28 @@ export const Home = (): JSX.Element => {
   }
 
   return (
-    <Box pt={"sm"} flex={1} bg={getColorBg()}>
+    <LinearGradient colors={getColorBg(wheatherCurrent)} style={{ flex: 1 }}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Box p={"xxxs"}>
-          <Box mt={"xs"} alignItems="center">
+        <Box mt={"sm"} p={"xxxs"}>
+          <Box alignItems="center">
             <Box>
               <Typography
                 textAlign={"center"}
                 mb={"cake"}
-                color={"blueLight"}
+                color={"rgba(255,255,255,.8)"}
                 variant={"medium"}
+                fontSize={14}
               >
                 BL Weather
               </Typography>
             </Box>
 
             {!loading && (
-              <Box mb={"xxs"}>
+              <Box>
                 <Typography
                   textAlign={"center"}
                   mb={"cake"}
@@ -194,19 +221,39 @@ export const Home = (): JSX.Element => {
           </Box>
 
           {!loading && <Forecast wheatherCurrent={wheatherCurrent} />}
-
-          <Box
-            mt={"xs"}
-            flexDirection={"row"}
-            justifyContent={"center"}
-            width={"100%"}
-          >
-            <Touchable onPress={goLocation}>
-              <Typography color={"base"}>Abrir com o maps</Typography>
-            </Touchable>
-          </Box>
         </Box>
       </ScrollView>
-    </Box>
+
+      <Box
+        p={"xxxs"}
+        pb={"md"}
+        bg={"rgba(0,0,0, .1)"}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+      >
+        <Touchable onPress={goLocation}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("@assets/images/maps.png")}
+          />
+        </Touchable>
+
+        <Box flexDirection={"row"}>
+          <Touchable mr={"sm"} onPress={goLocation}>
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require("@assets/images/scope.png")}
+            />
+          </Touchable>
+
+          <Touchable onPress={() => navigation.navigate("NewLocation")}>
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require("@assets/images/gps.png")}
+            />
+          </Touchable>
+        </Box>
+      </Box>
+    </LinearGradient>
   );
 };

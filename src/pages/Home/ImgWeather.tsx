@@ -24,21 +24,26 @@ export const ImgWeather = ({
 
   const getImg = () => {
     let date = new Date();
+    let main = wheather.weather[0].main;
 
     if (wheatherCurrent == null) {
       return require("@assets/images/cloudy.png");
     } else {
-      switch (wheather.weather[0].main) {
+      switch (main) {
         case "Clear":
           if (date.getHours() >= 18) {
-            return require("@assets/images/night.png");
+            return require("@assets/images/moon.png");
           } else {
             return require("@assets/images/daylight.png");
           }
         case "Thunderstorm":
           return require("@assets/images/ranny_thunderstorm.png");
         case "Drizzle":
-          return require("@assets/images/couldy_rainy.png");
+          if (date.getHours() >= 18) {
+            return require("@assets/images/couldy_rainy.png");
+          } else {
+            return require("@assets/images/couldy_rainy_light.png");
+          }
         case "Rain":
           return require("@assets/images/cloudy_havyrain.png");
         case "Clouds":
@@ -49,7 +54,7 @@ export const ImgWeather = ({
 
   return (
     <Box>
-      <Box mt={"nano"} mb={"xs"} alignItems={"center"}>
+      <Box mb={"xs"} alignItems={"center"}>
         <Image style={{ width: 180, height: 180 }} source={getImg()} />
       </Box>
 
@@ -61,7 +66,7 @@ export const ImgWeather = ({
           color={"base"}
           mb={"nano"}
         >
-          {parseInt(wheather.main.temp)}º
+          {parseInt(wheather.main.temp)}ºc
         </Typography>
       )}
 
