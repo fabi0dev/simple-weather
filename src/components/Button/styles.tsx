@@ -11,7 +11,7 @@ import {
 import { Typography } from "../Typography";
 import { TouchableOpacity } from "react-native";
 
-export type TouchableButtonTypes = "primary";
+export type TouchableButtonTypes = "primary" | "outline";
 
 export interface TouchableButtonProps
   extends ColorProps<typeof themeDefault>,
@@ -27,6 +27,11 @@ const touchableButtonVariants = variant<
   variants: {
     primary: {
       backgroundColor: "primary",
+    },
+    outline: {
+      backgroundColor: "base",
+      borderWidth: 1,
+      borderColor: "base4",
     },
   },
 });
@@ -59,6 +64,9 @@ const textButtonVariants = variant<TextButtonProps, TouchableButtonTypes>({
     primary: {
       color: "base",
       fontSize: 18,
+    },
+    outline: {
+      color: "grey02",
     },
   },
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image } from "react-native";
+import { ActivityIndicator, Image, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
@@ -8,12 +8,47 @@ import { useNavigation } from "@react-navigation/native";
 import { theme } from "@themes/default";
 import { getDataLocation, saveDataLocation } from "../../Storage/Weather";
 
-export const Welcome = (): JSX.Element => {
+export const GetLocation = (): JSX.Element => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState("");
+  const [logSearch, setLogSearch] = useState("");
   const [loadingGetLocation, setLoadingGetLocation] = useState(false);
   const [locationSetted, setLocationSetted] = useState(true);
   const navigation = useNavigation();
+
+  const getLocationUser = async () => {
+    setLogSearch("Buscando sua região...");
+    setLoadingGetLocation(true);
+
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setLoadingGetLocation(false);
+      setErrorMsg("A permissão para acessar o local foi negada!");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
+    });
+
+    await saveDataLocation(location.coords);
+
+    setLocation(location);
+    setLoadingGetLocation(false);
+    navigation.navigate("Home");
+  };
+
+  const checkLocation = async () => {
+    const location = await getDataLocation();
+
+    if (location != null) {
+      setLocationSetted(true);
+    }
+  };
+
+  useEffect(() => {
+    checkLocation();
+  }, []);
 
   return (
     <Box
@@ -28,7 +63,7 @@ export const Welcome = (): JSX.Element => {
         <Box mb={"nano"}>
           <Image
             style={{ maxWidth: 300, maxHeight: 300 }}
-            source={require("@assets/images/cloud_transfer.png")}
+            source={require("@assets/images/search_map.png")}
           />
         </Box>
 
@@ -39,7 +74,7 @@ export const Welcome = (): JSX.Element => {
           color={"base3"}
           variant={"medium"}
         >
-          Olá, que bom te ver!
+          Encontrar região
         </Typography>
 
         <Typography
@@ -48,24 +83,22 @@ export const Welcome = (): JSX.Element => {
           fontSize={16}
           color={"grey02"}
         >
-          Agora você tem a previsão do tempo na sua mão
+          {logSearch || "Para começar devemos encontrar sua região"}
         </Typography>
 
         <Box mt={"xl"}>
           {loadingGetLocation && (
-            <Box>
-              <ActivityIndicator color={theme.colors.primary} size={17} />
-            </Box>
+            <ActivityIndicator color={theme.colors.primary} />
           )}
 
-          <Button
-            onPress={() => navigation.navigate("GetLocation")}
-            variant="primary"
-          >
-            Começar
-          </Button>
-
-          <Typography mt={"xx"} color={"base"}>
+          {!loadingGetLocation && (
+            <Button onPress={getLocationUser} variant="primary">
+              Buscar
+            </Button>
+          )}
+        </Box>
+        <Box>
+          <Typography mt={"xx"} color={"red"}>
             {errorMsg}
           </Typography>
         </Box>

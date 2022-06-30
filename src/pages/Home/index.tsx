@@ -4,9 +4,6 @@ import {
   Image,
   RefreshControl,
   ScrollView,
-  StyleSheet,
-  Text,
-  View,
 } from "react-native";
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";

@@ -1,7 +1,6 @@
-import { Home, Welcome, NewLocation } from "../pages";
+import { Home, NewLocation } from "../pages";
 
 export default {
   Home,
-  Welcome,
   NewLocation,
 };

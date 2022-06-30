@@ -38,7 +38,7 @@ const textVariants = variant<TextProps, TextVariantsTypes>({
 
 export const Typography = styled(Text)<TextProps>`
   ${({ theme }) => ({
-    color: theme.colors.grey02,
+    color: theme.colors.grey01,
     fontSize: 16,
     fontFamily: "Roboto",
     fontWeight: 400,

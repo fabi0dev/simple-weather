@@ -37,6 +37,7 @@ export const theme = {
     base: '#FFF',
     base2: 'rgba(255,255,255, .5)',
     base3: '#232532',
+    base4: 'rgba(0,0,0, .05)',
   },
   fonts: {
     heading: 'Poppins Bold',

@@ -4,7 +4,7 @@ import { theme as themeDefault } from "@themes/default";
 import { SpaceProps } from "styled-system";
 
 interface ButtonProps extends SpaceProps<typeof themeDefault> {
-  children: string;
+  children: any;
   variant?: TouchableButtonTypes;
   onPress: () => void;
 }

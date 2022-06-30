@@ -1,18 +1,34 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components/native";
 import { theme as DefaultTheme } from "@themes/default";
 import Navigator from "./src/navigator";
 import { useFonts } from "expo-font";
-import { Typography } from "@components/Typography";
+import { getDataLocation } from "./src/Storage/Weather";
 
 export default function App() {
+  const [loading, setLoading] = useState(false);
+  const [locationSetted, setLocationSetted] = useState(false);
+
   const [loaded] = useFonts({
     Roboto: require("./src/assets/fonts/Roboto.ttf"),
     RobotoMedium: require("./src/assets/fonts/Roboto-Medium.ttf"),
   });
 
-  if (!loaded) {
+  const checkLocation = async () => {
+    setLoading(true);
+    const location = await getDataLocation();
+
+    if (location != null) {
+      setLocationSetted(true);
+    }
+  };
+
+  useEffect(() => {
+    checkLocation();
+  }, []);
+
+  if (!loaded || !loading) {
     return null;
   }
 
@@ -28,8 +44,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={DefaultTheme}>
-      <StatusBar backgroundColor={getColorStatusBar()} />
-      <Navigator />
+      <Navigator locationSetted={locationSetted} />
     </ThemeProvider>
   );
 }
