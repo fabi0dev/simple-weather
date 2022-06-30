@@ -4,9 +4,9 @@ import * as Location from "expo-location";
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import { Button } from "@components/Button/Button";
-import { useNavigation } from "@react-navigation/native";
 import { theme } from "@themes/default";
 import { getDataLocation, saveDataLocation } from "../../Storage/Weather";
+import { Home } from "../Home";
 
 export const GetLocation = (): JSX.Element => {
   const [location, setLocation] = useState<Location.LocationObject>();
@@ -14,7 +14,6 @@ export const GetLocation = (): JSX.Element => {
   const [logSearch, setLogSearch] = useState("");
   const [loadingGetLocation, setLoadingGetLocation] = useState(false);
   const [locationSetted, setLocationSetted] = useState(true);
-  const navigation = useNavigation();
 
   const getLocationUser = async () => {
     setLogSearch("Buscando sua região...");
@@ -34,8 +33,6 @@ export const GetLocation = (): JSX.Element => {
     await saveDataLocation(location.coords);
 
     setLocation(location);
-    setLoadingGetLocation(false);
-    navigation.navigate("Home");
   };
 
   const checkLocation = async () => {

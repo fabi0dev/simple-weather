@@ -7,7 +7,6 @@ import { default as WelcomeNavigator } from "./WelcomeNavigator";
 const Stack = createStackNavigator();
 
 const Navigator = ({ locationSetted }) => {
-  console.log(locationSetted);
   return (
     <NavigationContainer>
       <Stack.Navigator

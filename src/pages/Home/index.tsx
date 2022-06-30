@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -23,12 +23,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { getLocationUser } from "../../services/Location";
 
-export const Home = (): JSX.Element => {
+export const Home = ({ route }): JSX.Element => {
   const [wheatherCurrent, setWheatherCurrent] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dataLocation, setDataLocation] = useState(true);
   const navigation = useNavigation();
+  let { params } = route;
 
   const getWheather = async (reload = false, viewLoading = true) => {
     const dataLocation = await getDataLocation();
@@ -56,7 +57,7 @@ export const Home = (): JSX.Element => {
     }
   };
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await getWheather(true, false);
     setRefreshing(false);
@@ -136,8 +137,9 @@ export const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
+    delete params.reload;
     getWheather(true);
-  }, []);
+  }, [params]);
 
   return (
     <LinearGradient colors={getColorBg(wheatherCurrent)} style={{ flex: 1 }}>
@@ -161,7 +163,7 @@ export const Home = (): JSX.Element => {
             </Box>
 
             <Box>
-              {dataLocation.name && (
+              {dataLocation && dataLocation.name && (
                 <Typography
                   textAlign={"center"}
                   mb={"cake"}
@@ -173,7 +175,7 @@ export const Home = (): JSX.Element => {
                 </Typography>
               )}
 
-              {!dataLocation.name && wheatherCurrent && (
+              {!dataLocation && wheatherCurrent && (
                 <Typography
                   textAlign={"center"}
                   mb={"cake"}
@@ -275,7 +277,7 @@ export const Home = (): JSX.Element => {
           <Touchable onPress={() => navigation.navigate("NewLocation")}>
             <Image
               style={{ width: 30, height: 30 }}
-              source={require("@assets/images/gps.png")}
+              source={require("@assets/images/search.png")}
             />
           </Touchable>
         </Box>

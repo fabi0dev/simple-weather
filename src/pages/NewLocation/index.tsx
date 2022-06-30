@@ -37,6 +37,12 @@ export const NewLocation = (): JSX.Element => {
 
   const getCitys = async (search) => {
     clearTimeout(timeSearch);
+
+    if (search == "") {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
     timeSearch = setTimeout(async () => {
@@ -61,7 +67,9 @@ export const NewLocation = (): JSX.Element => {
 
     await delDataWeather();
 
-    navigation.navigate("Home");
+    navigation.navigate("Home", {
+      reload: true,
+    });
   };
 
   const Item = ({ data, children }) => {

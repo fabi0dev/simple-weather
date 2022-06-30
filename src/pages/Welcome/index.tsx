@@ -6,13 +6,11 @@ import { Typography } from "@components/Typography";
 import { Button } from "@components/Button/Button";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "@themes/default";
-import { getDataLocation, saveDataLocation } from "../../Storage/Weather";
 
 export const Welcome = (): JSX.Element => {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState("");
   const [loadingGetLocation, setLoadingGetLocation] = useState(false);
-  const [locationSetted, setLocationSetted] = useState(true);
   const navigation = useNavigation();
 
   return (
@@ -27,8 +25,8 @@ export const Welcome = (): JSX.Element => {
       <Box alignItems={"center"}>
         <Box mb={"nano"}>
           <Image
-            style={{ maxWidth: 300, maxHeight: 300 }}
-            source={require("@assets/images/cloud_transfer.png")}
+            style={{ maxWidth: 200, maxHeight: 200 }}
+            source={require("@assets/images/map_loc.png")}
           />
         </Box>
 
@@ -48,7 +46,7 @@ export const Welcome = (): JSX.Element => {
           fontSize={16}
           color={"grey02"}
         >
-          Agora você tem a previsão do tempo na sua mão
+          Agora você tem a previsão do tempo facilmente
         </Typography>
 
         <Box mt={"xl"}>

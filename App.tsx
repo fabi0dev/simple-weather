@@ -9,6 +9,7 @@ import { getDataLocation } from "./src/Storage/Weather";
 export default function App() {
   const [loading, setLoading] = useState(false);
   const [locationSetted, setLocationSetted] = useState(false);
+  const [renewApp, setRenewApp] = useState(false);
 
   const [loaded] = useFonts({
     Roboto: require("./src/assets/fonts/Roboto.ttf"),
@@ -18,15 +19,21 @@ export default function App() {
   const checkLocation = async () => {
     setLoading(true);
     const location = await getDataLocation();
-
-    if (location != null) {
-      setLocationSetted(true);
-    }
+    setLocationSetted(location != null);
   };
 
   useEffect(() => {
+    setTimeout(async () => {
+      if (!locationSetted) {
+        setRenewApp(!renewApp);
+        if (!loading) {
+          await checkLocation();
+        }
+      }
+    }, 2000);
+
     checkLocation();
-  }, []);
+  }, [renewApp]);
 
   if (!loaded || !loading) {
     return null;
