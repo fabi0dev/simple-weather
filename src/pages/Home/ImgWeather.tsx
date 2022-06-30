@@ -1,7 +1,7 @@
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import React from "react";
-import { Image } from "react-native";
+import { Animated, Image } from "react-native";
 
 interface ImgWeatherProps {
   wheatherCurrent: any;
@@ -31,7 +31,7 @@ export const ImgWeather = ({
     } else {
       switch (main) {
         case "Clear":
-          if (date.getHours() >= 18) {
+          if (date.getHours() >= 18 || date.getHours() <= 6) {
             return require("@assets/images/moon.png");
           } else {
             return require("@assets/images/daylight.png");
@@ -39,7 +39,7 @@ export const ImgWeather = ({
         case "Thunderstorm":
           return require("@assets/images/ranny_thunderstorm.png");
         case "Drizzle":
-          if (date.getHours() >= 18) {
+          if (date.getHours() >= 18 || date.getHours() <= 6) {
             return require("@assets/images/couldy_rainy.png");
           } else {
             return require("@assets/images/couldy_rainy_light.png");
@@ -66,7 +66,10 @@ export const ImgWeather = ({
           color={"base"}
           mb={"nano"}
         >
-          {parseInt(wheather.main.temp)}ºc
+          {parseInt(wheather.main.temp)}º
+          <Typography fontSize={50} color={"base"}>
+            c
+          </Typography>
         </Typography>
       )}
 

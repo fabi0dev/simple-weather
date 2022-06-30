@@ -11,6 +11,7 @@ interface InputTextProps extends TextInputProps {
   width?: number;
   heigth?: number;
   rightIconPress?: () => void;
+  bg?: string;
 }
 
 export const InputText: React.FC<InputTextProps> = ({
@@ -22,6 +23,7 @@ export const InputText: React.FC<InputTextProps> = ({
   rightIconPress,
   onFocus,
   onBlur,
+  bg,
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
@@ -37,17 +39,15 @@ export const InputText: React.FC<InputTextProps> = ({
       <Box
         width={width}
         height={heigth}
-        borderColor={focus ? "grey07" : "lilac"}
-        borderWidth={"nano"}
         borderRadius={"xi"}
         flexDirection={"row"}
         alignItems={"center"}
-        bg={"base"}
+        bg={bg || "base"}
       >
         <RTextInput
           px={"xxxs"}
           py={"nano"}
-          placeholderTextColor={defaultTheme.colors.grey07}
+          placeholderTextColor={defaultTheme.colors.grey03}
           pl={"xxxs"}
           pr={"xxxs"}
           onFocus={(e) => {

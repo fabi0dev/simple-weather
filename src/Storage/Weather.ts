@@ -19,9 +19,14 @@ const getDataWeather = async () => {
   return JSON.parse(item);
 };
 
+const delDataWeather = async () => {
+  return await AsyncStorage.removeItem(`DataWeather`);
+};
+
 export {
   saveDataWeather,
   getDataLocation,
   getDataWeather,
-  saveDataLocation
+  saveDataLocation,
+  delDataWeather
 };

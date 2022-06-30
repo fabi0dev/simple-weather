@@ -9,6 +9,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { getGeo } from "../../services/OpenWeatherAPI";
 import { Touchable } from "@components/Touchable";
 import { theme } from "@themes/default";
+import { delDataWeather, saveDataLocation } from "../../Storage/Weather";
 
 interface GeoData {
   name: string;
@@ -32,39 +33,48 @@ export const NewLocation = (): JSX.Element => {
       }
 
       try {
-        const response = await getGeo("Gurupi");
+        const response = await getGeo(search);
         setData(response);
       } catch (e) {}
       setLoading(false);
     }, 400);
   };
 
+  const saveData = async (data) => {
+    await saveDataLocation({
+      latitude: data.lat,
+      longitude: data.lon,
+      ...data,
+    });
+
+    await delDataWeather();
+
+    navigation.navigate("Home");
+  };
+
   const Item = ({ data, children }) => {
     return (
-      <Touchable mb={"nano"}>
-        <Typography>{children}</Typography>
+      <Touchable onPress={() => saveData(data)} mb={"nano"}>
+        <Typography color={"blueLightest"}>{children}</Typography>
       </Touchable>
     );
   };
 
   return (
-    <LinearGradient colors={["#eee", "#fff"]} style={{ flex: 1 }}>
-      <Box p={"xxxs"} mt={"xs"}>
-        <Box mb={"xx"}>
-          <InputText
-            placeholder="Buscar cidade..."
-            onChangeText={(value) => {
-              getCitys(value);
-            }}
-          />
-        </Box>
+    <Box p={"xxxs"} pt={"md"} bg={"base3"} flex={1}>
+      <Box mb={"xx"}>
+        <InputText
+          bg={"rgba(255,255,255, .7)"}
+          placeholder="Buscar cidade..."
+          onChangeText={(value) => {
+            getCitys(value);
+          }}
+        />
+      </Box>
 
-        <ScrollView>
-          {loading && (
-            <ActivityIndicator color={theme.colors.primary} size={25} />
-          )}
-
-          {data.map((dataCity: GeoData, key) => {
+      <ScrollView>
+        {!loading &&
+          data.map((dataCity: GeoData, key) => {
             return (
               <Box key={key} p={"xxxs"} pt={"none"}>
                 <Item data={dataCity}>
@@ -73,8 +83,11 @@ export const NewLocation = (): JSX.Element => {
               </Box>
             );
           })}
-        </ScrollView>
-      </Box>
-    </LinearGradient>
+
+        {loading && (
+          <ActivityIndicator color={theme.colors.primary} size={25} />
+        )}
+      </ScrollView>
+    </Box>
   );
 };

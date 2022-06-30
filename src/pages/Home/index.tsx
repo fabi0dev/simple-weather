@@ -11,6 +11,7 @@ import { getForecast } from "../../services/OpenWeatherAPI";
 import {
   getDataLocation,
   getDataWeather,
+  saveDataLocation,
   saveDataWeather,
 } from "../../Storage/Weather";
 import { theme } from "@themes/default";
@@ -20,21 +21,29 @@ import { showLocation } from "react-native-map-link";
 import { Forecast } from "./Forecast";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { getLocationUser } from "../../services/Location";
 
 export const Home = (): JSX.Element => {
   const [wheatherCurrent, setWheatherCurrent] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [dataLocation, setDataLocation] = useState(true);
   const navigation = useNavigation();
 
   const getWheather = async (reload = false, viewLoading = true) => {
+    const dataLocation = await getDataLocation();
+    setDataLocation(dataLocation);
+
     const data = await getDataWeather();
     if (viewLoading) {
       setLoading(true);
     }
 
     if (data == null || reload === true) {
-      const responseWheather = await getForecast("-11.732670", "-49.074699");
+      const responseWheather = await getForecast(
+        dataLocation.latitude,
+        dataLocation.longitude
+      );
 
       saveDataWeather(responseWheather);
       setWheatherCurrent(responseWheather);
@@ -62,18 +71,21 @@ export const Home = (): JSX.Element => {
     });
   };
 
-  const getColorBg = (wheatherCurrent) => {
-    if (wheatherCurrent != null) {
-      //const main = wheatherCurrent.list[0].weather[0].main;
-      const main = "Clear";
-      const d = new Date();
-      /* const d = new Date();
+  const getLocationCurrent = async () => {
+    const currentLocation = await getLocationUser();
+    await saveDataLocation(currentLocation.coords);
+    await getWheather(true);
+  };
 
-      if (d.getHours() > 18 || d.getHours() < 6) {
-        return "blueDark";
-      } else {
-        return "blue";
-      } */
+  const getColorBg = (wheatherCurrent) => {
+    if (loading) {
+      return ["#222", "#000"];
+    }
+
+    if (wheatherCurrent != null) {
+      const main = wheatherCurrent.list[0].weather[0].main;
+      const d = new Date();
+
       switch (main) {
         case "Clear":
           if (d.getHours() >= 18 || d.getHours() < 6) {
@@ -127,12 +139,8 @@ export const Home = (): JSX.Element => {
   };
 
   useEffect(() => {
-    getWheather();
+    getWheather(true);
   }, []);
-
-  if (wheatherCurrent == null) {
-    return null;
-  }
 
   return (
     <LinearGradient colors={getColorBg(wheatherCurrent)} style={{ flex: 1 }}>
@@ -155,8 +163,20 @@ export const Home = (): JSX.Element => {
               </Typography>
             </Box>
 
-            {!loading && (
-              <Box>
+            <Box>
+              {dataLocation.name && (
+                <Typography
+                  textAlign={"center"}
+                  mb={"cake"}
+                  color={"base"}
+                  fontSize={25}
+                >
+                  {dataLocation.name} - {dataLocation.state},{" "}
+                  {dataLocation.country}
+                </Typography>
+              )}
+
+              {!dataLocation.name && wheatherCurrent && (
                 <Typography
                   textAlign={"center"}
                   mb={"cake"}
@@ -165,19 +185,31 @@ export const Home = (): JSX.Element => {
                 >
                   {wheatherCurrent.city.country}, {wheatherCurrent.city.name}
                 </Typography>
+              )}
+            </Box>
+
+            {!loading && (
+              <Box>
+                <ImgWeather
+                  loading={loading}
+                  wheatherCurrent={wheatherCurrent}
+                />
               </Box>
             )}
 
-            <ImgWeather loading={loading} wheatherCurrent={wheatherCurrent} />
-
             {loading && (
-              <Box mt={-20}>
-                <Box mb={"nano"}>
-                  <ActivityIndicator color={theme.colors.grey01} size={17} />
+              <Box>
+                <Box mt={"xx"} mb={"nano"}>
+                  <ActivityIndicator color={theme.colors.base} />
                 </Box>
 
-                <Typography textAlign={"center"} mb={"cake"} color={"grey01"}>
-                  Cuidando de algumas coisas...
+                <Typography
+                  fontSize={70}
+                  textAlign={"center"}
+                  mb={"cake"}
+                  color={"base"}
+                >
+                  - -
                 </Typography>
               </Box>
             )}
@@ -236,7 +268,7 @@ export const Home = (): JSX.Element => {
         </Touchable>
 
         <Box flexDirection={"row"}>
-          <Touchable mr={"sm"} onPress={goLocation}>
+          <Touchable mr={"sm"} onPress={getLocationCurrent}>
             <Image
               style={{ width: 30, height: 30 }}
               source={require("@assets/images/scope.png")}

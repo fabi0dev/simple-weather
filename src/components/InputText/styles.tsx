@@ -32,12 +32,10 @@ const rTextInputVariants = variant<TextInputProps>({
 });
 
 export const RTextInput = styled.TextInput<TextInputProps>`
-  font-size: 15px;
-  border-radius: 6px;
-  height: 50px;
-  flex:1
-  background-color: transparent;
-  color: ${({ theme }) => theme.colors.grey02};
+  font-size: 16px;
+  height: 55px;
+  flex: 1;
+  color: ${({ theme }) => theme.colors.grey01};
   ${padding}
   ${margin}
 `;
