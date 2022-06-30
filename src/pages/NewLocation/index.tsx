@@ -7,9 +7,15 @@ import { InputText } from "@components/InputText";
 import { Typography } from "@components/Typography";
 import { ScrollView } from "react-native-gesture-handler";
 import { getGeo } from "../../services/OpenWeatherAPI";
+import { getColorLinearBg } from "../../services/UI";
 import { Touchable } from "@components/Touchable";
 import { theme } from "@themes/default";
-import { delDataWeather, saveDataLocation } from "../../Storage/Weather";
+import {
+  delDataWeather,
+  getDataWeather,
+  saveDataLocation,
+} from "../../Storage/Weather";
+import { capitalizeFont } from "../../services/Helps";
 
 interface GeoData {
   name: string;
@@ -20,8 +26,14 @@ interface GeoData {
 export const NewLocation = (): JSX.Element => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [dataWeather, setDataWeather] = useState(null);
   const [data, setData] = useState([]);
   let timeSearch: any = null;
+
+  const getCurrentData = async () => {
+    const dataWeather = await getDataWeather();
+    setDataWeather(dataWeather);
+  };
 
   const getCitys = async (search) => {
     clearTimeout(timeSearch);
@@ -60,6 +72,70 @@ export const NewLocation = (): JSX.Element => {
     );
   };
 
+  const ItemCurrent = () => {
+    if (dataWeather !== null) {
+      const { weather, main } = dataWeather.list[0];
+
+      return (
+        <Touchable onPress={() => navigation.goBack()} mb={"nano"}>
+          <LinearGradient
+            colors={getColorLinearBg(weather[0].main)}
+            style={{
+              flex: 1,
+              borderRadius: 16,
+              padding: 20,
+              paddingTop: 15,
+              paddingBottom: 15,
+            }}
+          >
+            <Box
+              flexDirection={"row"}
+              alignContent={"center"}
+              justifyContent={"space-between"}
+            >
+              <Box>
+                <Box mb={"xx"}>
+                  <Typography color={"base"} variant={"medium"} fontSize={20}>
+                    Meu Local
+                  </Typography>
+
+                  <Typography color={"base2"} fontSize={15}>
+                    {dataWeather.city.name}
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Typography color={"base2"} fontSize={15}>
+                    {capitalizeFont(weather[0].description)}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box justifyContent={"center"}>
+                <Box>
+                  <Typography color={"base"} fontSize={40}>
+                    {parseInt(main.temp)}ºc
+                  </Typography>
+
+                  <Typography variant="medium" fontSize={14} color={"base"}>
+                    Max.:{parseInt(main.temp_max)}º ~ Min.:
+                    {parseInt(main.temp_min)}º
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </LinearGradient>
+        </Touchable>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  useEffect(() => {
+    getCurrentData();
+  }, []);
+
   return (
     <Box p={"xxxs"} pt={"md"} bg={"base3"} flex={1}>
       <Box mb={"xx"}>
@@ -73,6 +149,8 @@ export const NewLocation = (): JSX.Element => {
       </Box>
 
       <ScrollView>
+        {!data.length && <ItemCurrent />}
+
         {!loading &&
           data.map((dataCity: GeoData, key) => {
             return (

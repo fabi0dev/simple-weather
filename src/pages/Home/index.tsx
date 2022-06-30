@@ -102,9 +102,6 @@ export const Home = (): JSX.Element => {
         default:
           return ["#26a5d3", "#0f3c78"];
       }
-
-      return ["#26d3ba", "#0f5c78"];
-      //return ["#4c669f", "#3b5998", "#192f6a"];
     } else {
       return ["#26d3ba", "#0f5c78"];
     }
