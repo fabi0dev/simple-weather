@@ -1,7 +1,7 @@
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import React from "react";
-import { Animated, Image } from "react-native";
+import Lottie from "lottie-react-native";
 
 interface ImgWeatherProps {
   wheatherCurrent: any;
@@ -27,27 +27,31 @@ export const ImgWeather = ({
     let main = wheather.weather[0].main;
 
     if (wheatherCurrent == null) {
-      return require("@assets/images/cloudy.png");
+      return require("@assets/animations/weather-windy.json");
     } else {
       switch (main) {
         case "Clear":
           if (date.getHours() >= 18 || date.getHours() <= 6) {
-            return require("@assets/images/moon.png");
+            return require("@assets/animations/weather-night.json");
           } else {
-            return require("@assets/images/daylight.png");
+            return require("@assets/animations/weather-sunny.json");
           }
         case "Thunderstorm":
-          return require("@assets/images/ranny_thunderstorm.png");
+          return require("@assets/animations/weather-storm.json");
         case "Drizzle":
           if (date.getHours() >= 18 || date.getHours() <= 6) {
-            return require("@assets/images/couldy_rainy.png");
+            return require("@assets/animations/weather-rainynight.json");
           } else {
-            return require("@assets/images/couldy_rainy_light.png");
+            return require("@assets/animations/weather-partly-shower.json");
           }
         case "Rain":
-          return require("@assets/images/cloudy_havyrain.png");
+          return require("@assets/animations/weather-storm-rainy.json");
         case "Clouds":
-          return require("@assets/images/cloudy.png");
+          return require("@assets/animations/weather-windy.json");
+        case "Snow":
+          return require("@assets/animations/weather-snow.json");
+        default:
+          return require("@assets/animations/weather-windy.json");
       }
     }
   };
@@ -55,7 +59,15 @@ export const ImgWeather = ({
   return (
     <Box>
       <Box mb={"xs"} alignItems={"center"}>
-        <Image style={{ width: 180, height: 180 }} source={getImg()} />
+        <Lottie
+          style={{
+            width: 180,
+            height: 180,
+          }}
+          source={getImg()}
+          autoPlay
+          loop={false}
+        />
       </Box>
 
       {!loading && (

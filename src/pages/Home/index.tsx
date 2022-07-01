@@ -22,6 +22,7 @@ import { Forecast } from "./Forecast";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { getLocationUser } from "../../services/Location";
+import Lottie from "lottie-react-native";
 
 export const Home = ({ route }): JSX.Element => {
   const [wheatherCurrent, setWheatherCurrent] = useState(null);
@@ -36,6 +37,7 @@ export const Home = ({ route }): JSX.Element => {
     setDataLocation(dataLocation);
 
     const data = await getDataWeather();
+
     if (viewLoading) {
       setLoading(true);
     }
@@ -78,7 +80,31 @@ export const Home = ({ route }): JSX.Element => {
     await getWheather(true);
   };
 
-  const getColorBg = (wheatherCurrent) => {
+  const getBg = (wheatherCurrent) => {
+    if (loading || wheatherCurrent == null) {
+      return require("@assets/animations/bg/bg.json");
+    }
+
+    const main = wheatherCurrent.list[0].weather[0].main;
+    const d = new Date();
+
+    switch (main) {
+      case "Clear":
+        return require("@assets/animations/bg/bg.json");
+      case "Thunderstorm" || "Rain":
+        return require("@assets/animations/bg/rain.json");
+      case "Drizzle":
+        return ["#39728d", "#1f4a5e"];
+      case "Clouds":
+        return ["#6198fd", "#1a3870"];
+      case "Snow":
+        return require("@assets/animations/bg/snow.json");
+      default:
+        return require("@assets/animations/bg/bg.json");
+    }
+  };
+
+  const getBgColor = (wheatherCurrent) => {
     if (loading) {
       return ["#222", "#000"];
     }
@@ -137,12 +163,26 @@ export const Home = ({ route }): JSX.Element => {
   };
 
   useEffect(() => {
-    delete params.reload;
+    if (typeof params !== "undefined") {
+      delete params.reload;
+    }
     getWheather(true);
   }, [params]);
 
   return (
-    <LinearGradient colors={getColorBg(wheatherCurrent)} style={{ flex: 1 }}>
+    <LinearGradient colors={getBgColor(wheatherCurrent)} style={{ flex: 1 }}>
+      <Lottie
+        style={{
+          flex: 1,
+          elevation: -1,
+          position: "absolute",
+          height: "100%",
+          opacity: 0.4,
+        }}
+        source={getBg(wheatherCurrent)}
+        autoPlay
+      />
+
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -158,7 +198,7 @@ export const Home = ({ route }): JSX.Element => {
                 variant={"medium"}
                 fontSize={14}
               >
-                BL Weather
+                BL Location
               </Typography>
             </Box>
 
@@ -175,7 +215,7 @@ export const Home = ({ route }): JSX.Element => {
                 </Typography>
               )}
 
-              {!dataLocation && wheatherCurrent && (
+              {(!dataLocation || !dataLocation.name) && wheatherCurrent && (
                 <Typography
                   textAlign={"center"}
                   mb={"cake"}
@@ -241,7 +281,9 @@ export const Home = ({ route }): JSX.Element => {
 
                 <MiniItem
                   title={"Visibilidade"}
-                  desc={wheatherCurrent.list[0].visibility / 1000}
+                  desc={(wheatherCurrent.list[0].visibility / 1000)
+                    .toFixed(1)
+                    .replace(".", ",")}
                   subDesc={"km"}
                 />
               </Box>

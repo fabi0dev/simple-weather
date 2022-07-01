@@ -7,6 +7,7 @@ import { Button } from "@components/Button/Button";
 import { theme } from "@themes/default";
 import { getDataLocation, saveDataLocation } from "../../Storage/Weather";
 import { Home } from "../Home";
+import AnimatedLottieView from "lottie-react-native";
 
 export const GetLocation = (): JSX.Element => {
   const [location, setLocation] = useState<Location.LocationObject>();
@@ -54,13 +55,18 @@ export const GetLocation = (): JSX.Element => {
       justifyContent={"center"}
       pt={"sm"}
       flex={1}
-      bg={"lilacLight"}
+      bg={"base"}
     >
       <Box alignItems={"center"}>
         <Box mb={"nano"}>
-          <Image
-            style={{ maxWidth: 300, maxHeight: 300 }}
-            source={require("@assets/images/search_map.png")}
+          <AnimatedLottieView
+            style={{
+              width: 350,
+              height: 350,
+            }}
+            source={require("@assets/animations/location-map.json")}
+            autoPlay
+            loop={false}
           />
         </Box>
 

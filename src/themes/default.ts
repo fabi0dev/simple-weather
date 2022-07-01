@@ -40,7 +40,6 @@ export const theme = {
     base4: 'rgba(0,0,0, .05)',
   },
   fonts: {
-    heading: 'Poppins Bold',
     medium: 'Inter Medium',
     regular: 'Inter Regular',
   },
