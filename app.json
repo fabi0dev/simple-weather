@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "bl-location",
+    "slug": "bl-location",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
