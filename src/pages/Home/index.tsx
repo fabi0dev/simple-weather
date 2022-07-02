@@ -91,12 +91,9 @@ export const Home = ({ route }): JSX.Element => {
     switch (main) {
       case "Clear":
         return require("@assets/animations/bg/bg.json");
-      case "Thunderstorm" || "Rain":
+      case "Thunderstorm":
+      case "Rain":
         return require("@assets/animations/bg/rain.json");
-      case "Drizzle":
-        return ["#39728d", "#1f4a5e"];
-      case "Clouds":
-        return ["#6198fd", "#1a3870"];
       case "Snow":
         return require("@assets/animations/bg/snow.json");
       default:
@@ -120,7 +117,8 @@ export const Home = ({ route }): JSX.Element => {
           } else {
             return ["#1baaff", "#0089d9"];
           }
-        case "Thunderstorm" || "Rain":
+        case "Thunderstorm":
+        case "Rain":
           return ["#395aa7", "#2a3b64"];
         case "Drizzle":
           return ["#39728d", "#1f4a5e"];

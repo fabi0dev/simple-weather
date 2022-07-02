@@ -1,5 +1,10 @@
 {
   "name": "bl-location",
+  "author": {
+    "name": "Fábio Alves",
+    "email": "fabioalves.to@gmail.com",
+    "url": "https://github.com/fabi0dev/bl-location/"
+  },
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
