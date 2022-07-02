@@ -21,7 +21,7 @@
 ### Comportamento do app
 - Além de mostrar as informações meteorológicas, o layout que se ajusta de forma inteligente às condições atuais.
 - Imagens e fundos animados representam as condições climáticas atuais.
-- É possível selecionar o local atual ou buscar novas regiões através dos ícones inferiores da página inicial.
+- É possível selecionar e atualizar a região através dos ícones inferiores na página inicial.
 
 
 <div>
