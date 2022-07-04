@@ -1,7 +1,7 @@
 # BL Location
 ### Aplicativo que permite visualizar as condições climáticas de acordo com seu local
 
-##### Desenvolvido com React Native, é possível compilar tanto para IOS como para Android, o mesmo retorna as condições climáticas de acordo com o local do dispositivo, a latitude e longitude são capturadas via GPS. Essas informações sãos requeridas pela [API do Open Weather](https://openweathermap.org/api) que retorna os dados do clima daquela região.
+##### Desenvolvido com React Native, é possível compilar tanto para IOS como para Android, o mesmo retorna as condições climáticas de acordo com o local do dispositivo, a latitude e longitude são capturadas via GPS, essas informações são requeridas pela API [Open Weather](https://openweathermap.org/api) que retorna os dados do clima daquela região.
 
 
 ##### Na tela de boas-vindas o usuário toca no botão "Começar", depois disso o aplicativo vai requerer a permissão de Localização. Após obter o local o usuário vai ser redirecionado para a tela home, onde os dados principais são exibidos.
