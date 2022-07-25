@@ -1,9 +1,8 @@
 import axios from 'axios';
-
-const appid = '93c14486890b0ebb887e0add8cf0b9e2';
+import {  API_WEATHER, API_WEATHER_URL } from 'react-native-dotenv';
 
 const api = axios.create({
-  baseURL: 'https://api.openweathermap.org',
+  baseURL: API_WEATHER_URL,
   validateStatus: status => true,
 });
 
@@ -13,7 +12,7 @@ const getWeather = async (lat, lon) => {
       params: {
         lat,
         lon,
-        appid,
+        appid : API_WEATHER,
         lang : 'pt_br',
         units : 'metric',
       }
