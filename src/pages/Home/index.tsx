@@ -25,10 +25,38 @@ import { getLocationUser } from "../../services/Location";
 import Lottie from "lottie-react-native";
 
 export const Home = ({ route }): JSX.Element => {
-  const [wheatherCurrent, setWheatherCurrent] = useState(null);
+  const [wheatherCurrent, setWheatherCurrent] = useState<{
+    list: Array<{
+      main: {
+        feels_like: string;
+        humidity: string;
+        temp: string;
+        temp_min: string;
+        temp_max: string;
+      };
+      wind: {
+        speed: string;
+      };
+      visibility: number;
+      description: string;
+    } | null>;
+    city: {
+      country: string;
+      name: string;
+    };
+  } | null>(null);
+
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [dataLocation, setDataLocation] = useState(true);
+  const [dataLocation, setDataLocation] = useState<{
+    latitude: string | number;
+    longitude: string | number;
+    name: string;
+    state: string;
+    country: string;
+    lat: string;
+    lon: string;
+  } | null>(null);
   const navigation = useNavigation();
   let { params } = route;
 
@@ -44,8 +72,8 @@ export const Home = ({ route }): JSX.Element => {
 
     if (data == null || reload === true) {
       const responseWheather = await getForecast(
-        dataLocation.latitude,
-        dataLocation.longitude
+        dataLocation?.latitude,
+        dataLocation?.longitude
       );
 
       saveDataWeather(responseWheather);
@@ -69,14 +97,14 @@ export const Home = ({ route }): JSX.Element => {
     const dataLocation = await getDataLocation();
 
     showLocation({
-      latitude: dataLocation.latitude,
-      longitude: dataLocation.longitude,
-    });
+      latitude: dataLocation?.latitude,
+      longitude: dataLocation?.longitude,
+    } as never);
   };
 
   const getLocationCurrent = async () => {
     const currentLocation = await getLocationUser();
-    await saveDataLocation(currentLocation.coords);
+    await saveDataLocation(currentLocation?.coords);
     await getWheather(true);
   };
 
@@ -86,7 +114,6 @@ export const Home = ({ route }): JSX.Element => {
     }
 
     const main = wheatherCurrent.list[0].weather[0].main;
-    const d = new Date();
 
     switch (main) {
       case "Clear":
@@ -132,11 +159,19 @@ export const Home = ({ route }): JSX.Element => {
     }
   };
 
-  const MiniItem = ({ title, desc, subDesc }: any) => {
+  const MiniItem = ({
+    title,
+    desc,
+    subDesc,
+  }: {
+    title: string;
+    desc: string;
+    subDesc?: string;
+  }) => {
     return (
       <Box
         width={"49%"}
-        bg={"rgba(0,0,0, .1)"}
+        bg={"base5"}
         p={"nano"}
         borderRadius={"nano"}
         mb={"cake"}
@@ -192,7 +227,7 @@ export const Home = ({ route }): JSX.Element => {
               <Typography
                 textAlign={"center"}
                 mb={"cake"}
-                color={"rgba(255,255,255,.8)"}
+                color={"base6"}
                 variant={"medium"}
                 fontSize={14}
               >
@@ -261,25 +296,32 @@ export const Home = ({ route }): JSX.Element => {
               >
                 <MiniItem
                   title={"Sensação"}
-                  desc={parseInt(wheatherCurrent.list[0].main.feels_like) + "º"}
+                  desc={
+                    parseInt(
+                      wheatherCurrent?.list[0]?.main.feels_like as string
+                    ) + "º"
+                  }
                 />
 
                 <MiniItem
                   title={"Umidade"}
-                  desc={wheatherCurrent.list[0].main.humidity + "%"}
+                  desc={wheatherCurrent?.list[0]?.main.humidity + "%"}
                 />
 
                 <MiniItem
                   title={"Vento"}
                   desc={(
-                    parseInt(wheatherCurrent.list[0].wind.speed) * 3.6
+                    parseInt(wheatherCurrent?.list[0]?.wind.speed as string) *
+                    3.6
                   ).toFixed(0)}
                   subDesc={"km/h"}
                 />
 
                 <MiniItem
                   title={"Visibilidade"}
-                  desc={(wheatherCurrent.list[0].visibility / 1000)
+                  desc={(
+                    (wheatherCurrent?.list[0]?.visibility as number) / 1000
+                  )
                     .toFixed(1)
                     .replace(".", ",")}
                   subDesc={"km"}
@@ -295,7 +337,7 @@ export const Home = ({ route }): JSX.Element => {
       <Box
         p={"xxxs"}
         pb={"md"}
-        bg={"rgba(0,0,0, .1)"}
+        bg={"base5"}
         flexDirection={"row"}
         justifyContent={"space-between"}
       >
@@ -314,7 +356,9 @@ export const Home = ({ route }): JSX.Element => {
             />
           </Touchable>
 
-          <Touchable onPress={() => navigation.navigate("NewLocation")}>
+          <Touchable
+            onPress={() => navigation.navigate("NewLocation" as never)}
+          >
             <Image
               style={{ width: 30, height: 30 }}
               source={require("@assets/images/search.png")}

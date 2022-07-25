@@ -3,7 +3,8 @@ import { TextInputProps } from "react-native";
 import { RTextInput } from "./styles";
 import { Box } from "../Box/Box";
 import { Typography } from "../Typography/Typography";
-import { theme as defaultTheme } from "@themes/default";
+import { theme } from "@themes/default";
+
 interface InputTextProps extends TextInputProps {
   label?: string;
   error?: string;
@@ -11,7 +12,9 @@ interface InputTextProps extends TextInputProps {
   width?: number;
   heigth?: number;
   rightIconPress?: () => void;
-  bg?: string;
+  bg?: typeof theme.colors;
+  onFocus?: (Event) => void;
+  onBlur?: (Event) => void;
 }
 
 export const InputText: React.FC<InputTextProps> = ({
@@ -47,7 +50,7 @@ export const InputText: React.FC<InputTextProps> = ({
         <RTextInput
           px={"xxxs"}
           py={"nano"}
-          placeholderTextColor={defaultTheme.colors.grey03}
+          placeholderTextColor={theme.colors.grey03}
           pl={"xxxs"}
           pr={"xxxs"}
           onFocus={(e) => {

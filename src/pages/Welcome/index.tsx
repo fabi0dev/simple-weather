@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image } from "react-native";
+import React from "react";
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import { Button } from "@components/Button/Button";
@@ -53,7 +52,7 @@ export const Welcome = (): JSX.Element => {
 
         <Box mt={"xl"}>
           <Button
-            onPress={() => navigation.navigate("GetLocation")}
+            onPress={() => navigation.navigate("GetLocation" as never)}
             variant="primary"
           >
             Começar

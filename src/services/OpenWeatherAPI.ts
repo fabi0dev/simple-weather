@@ -20,7 +20,7 @@ const getWeather = async (lat, lon) => {
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     //error
   }
 }
@@ -39,7 +39,7 @@ const getForecast = async (lat, lon) => {
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     //error
   }
 }
@@ -55,7 +55,7 @@ const getGeo = async (q) => {
     });
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
     //error
   }
 }

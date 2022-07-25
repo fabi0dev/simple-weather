@@ -7,10 +7,7 @@ interface ForecastProps {
   wheatherCurrent: any;
 }
 
-export const Forecast = ({
-  wheatherCurrent,
-  loading,
-}: ForecastProps): JSX.Element => {
+export const Forecast = ({ wheatherCurrent }: ForecastProps): JSX.Element => {
   const { list } = wheatherCurrent;
   let dateForecast = [];
 
@@ -30,10 +27,10 @@ export const Forecast = ({
     return days[d.getDay()];
   };
 
-  const getImgMain = (main, hour = false) => {
+  const getImgMain = (main, hour = undefined) => {
     switch (main) {
       case "Clear":
-        if (hour !== false && (hour > 18 || hour < 6)) {
+        if (hour !== undefined && (hour > 18 || hour < 6)) {
           return require("@assets/images/night.png");
         } else {
           return require("@assets/images/daylight.png");
@@ -52,11 +49,11 @@ export const Forecast = ({
   const ItemDay = ({ hour, temp, main }) => {
     return (
       <Box
-        borderRadius={8}
+        borderRadius={"default"}
         width={"32%"}
         pt={"cake"}
         pb={"cake"}
-        bg={"rgba(0,0,0, .1)"}
+        bg={"base5"}
       >
         <Box mb={"prim"}>
           <Box alignItems={"center"} mb={"prim"}>
@@ -163,17 +160,17 @@ export const Forecast = ({
         borderRadius={"nano"}
         flexDirection={"row"}
         flexWrap={"wrap"}
-        bg={"rgba(0,0,0, .1)"}
+        bg={"base5"}
       >
         {list.map((itemWeather, key) => {
           let { dt, main, weather } = itemWeather;
           let dateWeather = getDate(new Date(dt * 1000));
 
-          if (dateForecast.indexOf(dateWeather) != -1) {
+          if (dateForecast.indexOf(dateWeather as never) != -1) {
             return;
           }
 
-          dateForecast.push(dateWeather);
+          dateForecast.push(dateWeather as never);
 
           return (
             <Item

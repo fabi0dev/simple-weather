@@ -22,34 +22,27 @@ export const theme = {
     blueLight: '#BDDEFF',
     blueLightest: '#EAF5FF',
 
-    lilacDarkest: '#B8B8CC',
-    lilacDark: '#CECEE0',
     lilac: '#D8D8E8',
     lilacLight: '#f9f9f9',
 
     grey01: '#33303E',
     grey02: '#4E4B59',
     grey03: '#5F5C6B',
-    grey04: '#7A7786',
-    grey05: '#8C8A97',
-    grey06: '#B2B0BF',
-    grey07: '#8B8CB2',
     base: '#FFF',
     base2: 'rgba(255,255,255, .5)',
     base3: '#232532',
     base4: 'rgba(0,0,0, .05)',
+    base5: 'rgba(0,0,0, .1)',
+    base6: 'rgba(255,255,255,.8)',
+    red: "#ff0000"
   },
   fonts: {
     medium: 'Inter Medium',
     regular: 'Inter Regular',
   },
   fontWeights: {
-    light: 300,
     normal: 400,
-    medium: 500,
-    SemiBold: 600,
     bold: 700,
-    black: 900,
   },
   fontSizes: [12, 14, 16, 18, 20, 24, 32, 48],
   radii: {
