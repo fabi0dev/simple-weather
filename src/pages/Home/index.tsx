@@ -59,12 +59,6 @@ export const Home = ({ route }): JSX.Element => {
     }
   };
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await getWheather(true, false);
-    setRefreshing(false);
-  }, []);
-
   const goLocation = async () => {
     const dataLocation = await getDataLocation();
 
@@ -75,6 +69,7 @@ export const Home = ({ route }): JSX.Element => {
   };
 
   const getLocationCurrent = async () => {
+    setLoading(true);
     const currentLocation = await getLocationUser();
     await saveDataLocation(currentLocation.coords);
     await getWheather(true);
@@ -160,6 +155,12 @@ export const Home = ({ route }): JSX.Element => {
     );
   };
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getWheather(true, false);
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     if (typeof params !== "undefined") {
       delete params.reload;
@@ -200,30 +201,32 @@ export const Home = ({ route }): JSX.Element => {
               </Typography>
             </Box>
 
-            <Box>
-              {dataLocation && dataLocation.name && (
-                <Typography
-                  textAlign={"center"}
-                  mb={"cake"}
-                  color={"base"}
-                  fontSize={25}
-                >
-                  {dataLocation.name} - {dataLocation.state},{" "}
-                  {dataLocation.country}
-                </Typography>
-              )}
+            {!loading && (
+              <Box>
+                {dataLocation && dataLocation.name && (
+                  <Typography
+                    textAlign={"center"}
+                    mb={"cake"}
+                    color={"base"}
+                    fontSize={25}
+                  >
+                    {dataLocation.name} - {dataLocation.state},{" "}
+                    {dataLocation.country}
+                  </Typography>
+                )}
 
-              {(!dataLocation || !dataLocation.name) && wheatherCurrent && (
-                <Typography
-                  textAlign={"center"}
-                  mb={"cake"}
-                  color={"base"}
-                  fontSize={25}
-                >
-                  {wheatherCurrent.city.country}, {wheatherCurrent.city.name}
-                </Typography>
-              )}
-            </Box>
+                {(!dataLocation || !dataLocation.name) && wheatherCurrent && (
+                  <Typography
+                    textAlign={"center"}
+                    mb={"cake"}
+                    color={"base"}
+                    fontSize={25}
+                  >
+                    {wheatherCurrent.city.country}, {wheatherCurrent.city.name}
+                  </Typography>
+                )}
+              </Box>
+            )}
 
             {!loading && (
               <Box>
@@ -292,36 +295,38 @@ export const Home = ({ route }): JSX.Element => {
         </Box>
       </ScrollView>
 
-      <Box
-        p={"xxxs"}
-        pb={"md"}
-        bg={"rgba(0,0,0, .1)"}
-        flexDirection={"row"}
-        justifyContent={"space-between"}
-      >
-        <Touchable onPress={goLocation}>
-          <Image
-            style={{ width: 30, height: 30 }}
-            source={require("@assets/images/maps.png")}
-          />
-        </Touchable>
-
-        <Box flexDirection={"row"}>
-          <Touchable mr={"sm"} onPress={getLocationCurrent}>
+      {!loading && (
+        <Box
+          p={"xxxs"}
+          pb={"md"}
+          bg={"rgba(0,0,0, .1)"}
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+        >
+          <Touchable onPress={goLocation}>
             <Image
               style={{ width: 30, height: 30 }}
-              source={require("@assets/images/scope.png")}
+              source={require("@assets/images/maps.png")}
             />
           </Touchable>
 
-          <Touchable onPress={() => navigation.navigate("NewLocation")}>
-            <Image
-              style={{ width: 30, height: 30 }}
-              source={require("@assets/images/search.png")}
-            />
-          </Touchable>
+          <Box flexDirection={"row"}>
+            <Touchable mr={"sm"} onPress={getLocationCurrent}>
+              <Image
+                style={{ width: 30, height: 30 }}
+                source={require("@assets/images/scope.png")}
+              />
+            </Touchable>
+
+            <Touchable onPress={() => navigation.navigate("NewLocation")}>
+              <Image
+                style={{ width: 30, height: 30 }}
+                source={require("@assets/images/search.png")}
+              />
+            </Touchable>
+          </Box>
         </Box>
-      </Box>
+      )}
     </LinearGradient>
   );
 };
