@@ -34,4 +34,6 @@ O app utiliza [Expo](https://expo.dev/) em seu workflow e as libs [styled-compon
 
 ### Instalação Para Testes
 
-Para testar o app deve-se ter o ambiente React Native configurado, e o Expo devidamente instalado, após isso basta no diretório do App executar `yarn instal`.
+Para testar o app, basta ter o ambiente React Native configurado e o Expo devidamente instalado, após isso no diretório do App execute `yarn instal` logo após `expo start`.
+
+Obs: Em alguns emuladores pode não ser possível obter a localização real, portanto a experiêcia é melhor em um dispositivo físico.
