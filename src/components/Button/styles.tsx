@@ -30,7 +30,7 @@ const touchableButtonVariants = variant<
     },
     outline: {
       backgroundColor: "base",
-      borderWidth: 1,
+      borderWidth: "nano",
       borderColor: "base4",
     },
   },

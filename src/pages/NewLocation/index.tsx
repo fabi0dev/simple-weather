@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { Box } from "@components/Box";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -26,9 +26,24 @@ interface GeoData {
 export const NewLocation = (): JSX.Element => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const [dataWeather, setDataWeather] = useState(null);
+  const [dataWeather, setDataWeather] = useState<{
+    list: Array<{
+      weather: Array<{
+        main: string;
+        description: string;
+      }>;
+      main: {
+        temp: string;
+        temp_max: string;
+        temp_min: string;
+      };
+    }>;
+    city: {
+      name: string;
+    };
+  } | null>(null);
   const [data, setData] = useState([]);
-  let timeSearch: any = null;
+  let timeSearch = setTimeout(() => {});
 
   const getCurrentData = async () => {
     const dataWeather = await getDataWeather();
@@ -67,9 +82,12 @@ export const NewLocation = (): JSX.Element => {
 
     await delDataWeather();
 
-    navigation.navigate("Home", {
-      reload: true,
-    });
+    navigation.navigate(
+      "Home" as never,
+      {
+        reload: true,
+      } as never
+    );
   };
 
   const Item = ({ data, children }) => {
@@ -90,7 +108,7 @@ export const NewLocation = (): JSX.Element => {
             colors={getColorLinearBg(weather[0].main)}
             style={{
               flex: 1,
-              borderRadius: 16,
+              borderRadius: 8,
               padding: 20,
               paddingTop: 15,
               paddingBottom: 15,
@@ -103,11 +121,11 @@ export const NewLocation = (): JSX.Element => {
             >
               <Box>
                 <Box mb={"xx"}>
-                  <Typography color={"base"} variant={"medium"} fontSize={20}>
+                  <Typography color={"base2"} variant="medium" fontSize={12}>
                     Meu Local
                   </Typography>
 
-                  <Typography color={"base2"} fontSize={15}>
+                  <Typography color={"base"} variant="medium" fontSize={20}>
                     {dataWeather.city.name}
                   </Typography>
                 </Box>
@@ -125,7 +143,7 @@ export const NewLocation = (): JSX.Element => {
                     {parseInt(main.temp)}ºc
                   </Typography>
 
-                  <Typography variant="medium" fontSize={14} color={"base"}>
+                  <Typography fontSize={14} variant="medium" color={"base"}>
                     Max.:{parseInt(main.temp_max)}º ~ Min.:
                     {parseInt(main.temp_min)}º
                   </Typography>
@@ -148,7 +166,7 @@ export const NewLocation = (): JSX.Element => {
     <Box p={"xxxs"} pt={"md"} bg={"base3"} flex={1}>
       <Box mb={"xx"}>
         <InputText
-          bg={"rgba(255,255,255, .7)"}
+          bg={"base6" as never}
           placeholder="Buscar cidade..."
           onChangeText={(value) => {
             getCitys(value);

@@ -9,8 +9,10 @@ const Stack = createStackNavigator();
 const Navigator = ({ locationSetted }) => {
   return (
     <NavigationContainer>
+      {/* @ts-ignore */}
       <Stack.Navigator
         screenOptions={{
+          //@ts-ignore
           headerMode: false,
         }}
         initialRouteName="Home"

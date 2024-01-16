@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image } from "react-native";
+import React from "react";
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import { Button } from "@components/Button/Button";
@@ -38,7 +37,7 @@ export const Welcome = (): JSX.Element => {
             color={"base3"}
             variant={"medium"}
           >
-            Olá, que bom te ver!
+            Simple Weather
           </Typography>
 
           <Typography
@@ -47,13 +46,13 @@ export const Welcome = (): JSX.Element => {
             fontSize={16}
             color={"grey02"}
           >
-            Agora você tem a previsão do tempo facilmente
+            Agora você pode saber a previsão do tempo facilmente!
           </Typography>
         </Box>
 
         <Box mt={"xl"}>
           <Button
-            onPress={() => navigation.navigate("GetLocation")}
+            onPress={() => navigation.navigate("GetLocation" as never)}
             variant="primary"
           >
             Começar

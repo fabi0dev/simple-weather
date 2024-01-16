@@ -41,7 +41,7 @@ export const Typography = styled(Text)<TextProps>`
     color: theme.colors.grey01,
     fontSize: 16,
     fontFamily: "Roboto",
-    fontWeight: 400,
+    fontWeight: "normal",
   })}
   ${margin}
   ${color}

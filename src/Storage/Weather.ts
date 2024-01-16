@@ -1,16 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocationObjectCoords } from "expo-location";
 
-const saveDataLocation = async (value: any) => {
+const saveDataLocation = async (value:LocationObjectCoords) => {
   return AsyncStorage.setItem(`DataLocation`,JSON.stringify(value));
 };
 
-const getDataLocation = async () => {
-  const item: any = await AsyncStorage.getItem(`DataLocation`);
-  return JSON.parse(item);
+const getDataLocation = async ():Promise<{
+  latitude: number | string;
+  longitude: number | string;
+  name: string;
+  state: string;
+  country: string;
+  lat: string;
+  lon: string;
+} | null> => {
+  const item = await AsyncStorage.getItem(`DataLocation`);
+  return JSON.parse(item as string);
 };
 
 
-const saveDataWeather = async (value: any) => {
+const saveDataWeather = async (value:string) => {
   return AsyncStorage.setItem(`DataWeather`,JSON.stringify(value));
 };
 

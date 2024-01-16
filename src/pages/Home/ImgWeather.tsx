@@ -2,9 +2,33 @@ import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import React from "react";
 import Lottie from "lottie-react-native";
+import { getImgWeatherAnimation } from "../../services/UI";
+import { capitalizeFont } from "../../services/Helps";
 
 interface ImgWeatherProps {
-  wheatherCurrent: any;
+  wheatherCurrent: {
+    list: Array<{
+      main: {
+        feels_like: string;
+        humidity: string;
+        temp: string;
+        temp_min: string;
+        temp_max: string;
+      };
+      wind: {
+        speed: string;
+      };
+      visibility: number;
+      description: string;
+      weather: Array<{
+        description: string;
+      }>;
+    } | null>;
+    city: {
+      country: string;
+      name: string;
+    };
+  } | null;
   loading: boolean;
 }
 
@@ -12,49 +36,7 @@ export const ImgWeather = ({
   wheatherCurrent,
   loading,
 }: ImgWeatherProps): JSX.Element => {
-  const { list } = wheatherCurrent;
-  const wheather = list[0];
-
-  const capitalize = (string, separator = " ") => {
-    return string
-      .split(separator)
-      .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
-      .join(separator);
-  };
-
-  const getImg = () => {
-    let date = new Date();
-    let main = wheather.weather[0].main;
-
-    if (wheatherCurrent == null) {
-      return require("@assets/animations/weather-windy.json");
-    } else {
-      switch (main) {
-        case "Clear":
-          if (date.getHours() >= 18 || date.getHours() <= 6) {
-            return require("@assets/animations/weather-night.json");
-          } else {
-            return require("@assets/animations/weather-sunny.json");
-          }
-        case "Thunderstorm":
-          return require("@assets/animations/weather-storm.json");
-        case "Drizzle":
-          if (date.getHours() >= 18 || date.getHours() <= 6) {
-            return require("@assets/animations/weather-rainynight.json");
-          } else {
-            return require("@assets/animations/weather-partly-shower.json");
-          }
-        case "Rain":
-          return require("@assets/animations/weather-storm-rainy.json");
-        case "Clouds":
-          return require("@assets/animations/weather-windy.json");
-        case "Snow":
-          return require("@assets/animations/weather-snow.json");
-        default:
-          return require("@assets/animations/weather-windy.json");
-      }
-    }
-  };
+  const wheather = wheatherCurrent?.list[0];
 
   return (
     <Box>
@@ -64,7 +46,7 @@ export const ImgWeather = ({
             width: 180,
             height: 180,
           }}
-          source={getImg()}
+          source={getImgWeatherAnimation(wheather, wheatherCurrent)}
           autoPlay
           loop={false}
         />
@@ -78,7 +60,7 @@ export const ImgWeather = ({
           color={"base"}
           mb={"nano"}
         >
-          {parseInt(wheather.main.temp)}º
+          {parseInt(wheather?.main.temp as string)}º
           <Typography fontSize={50} color={"base"}>
             c
           </Typography>
@@ -92,7 +74,7 @@ export const ImgWeather = ({
           mb={"cake"}
           color={"base"}
         >
-          {capitalize(wheather.weather[0].description)}
+          {capitalizeFont(wheather?.weather[0].description)}
         </Typography>
       )}
 
@@ -103,8 +85,8 @@ export const ImgWeather = ({
           mb={"cake"}
           color={"base"}
         >
-          Min.:{parseInt(wheather.main.temp_min)}º Max.:
-          {parseInt(wheather.main.temp_max)}º
+          Min.:{parseInt(wheather?.main.temp_min as string)}º Max.:
+          {parseInt(wheather?.main.temp_max as string)}º
         </Typography>
       )}
     </Box>

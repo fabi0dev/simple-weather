@@ -1,4 +1,4 @@
-# BL Location
+# Simple Weather
 
 ### Aplicativo que permite visualizar as condições climáticas de acordo com seu local
 

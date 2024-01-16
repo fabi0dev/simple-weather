@@ -1,4 +1,4 @@
-const getColorLinearBg = (main) => {
+const getColorLinearBg = (main:string) => {
   if (main) {
     const d = new Date();
 
@@ -24,7 +24,7 @@ const getColorLinearBg = (main) => {
   }
 };
 
-const getImgWeather = (main) => {
+const getImgWeather = (main:string) => {
   let date = new Date();
 
   if (!main) {
@@ -53,7 +53,43 @@ const getImgWeather = (main) => {
   }
 };
 
+
+const getImgWeatherAnimation = (wheather, wheatherCurrent) => {
+  let date = new Date();
+  let main = wheather.weather[0].main;
+
+  if (wheatherCurrent == null) {
+    return require("@assets/animations/weather-windy.json");
+  } else {
+    switch (main) {
+      case "Clear":
+        if (date.getHours() >= 18 || date.getHours() <= 6) {
+          return require("@assets/animations/weather-night.json");
+        } else {
+          return require("@assets/animations/weather-sunny.json");
+        }
+      case "Thunderstorm":
+        return require("@assets/animations/weather-storm.json");
+      case "Drizzle":
+        if (date.getHours() >= 18 || date.getHours() <= 6) {
+          return require("@assets/animations/weather-rainynight.json");
+        } else {
+          return require("@assets/animations/weather-partly-shower.json");
+        }
+      case "Rain":
+        return require("@assets/animations/weather-storm-rainy.json");
+      case "Clouds":
+        return require("@assets/animations/weather-windy.json");
+      case "Snow":
+        return require("@assets/animations/weather-snow.json");
+      default:
+        return require("@assets/animations/weather-windy.json");
+    }
+  }
+};
+
 export {
   getColorLinearBg,
-  getImgWeather
+  getImgWeather,
+  getImgWeatherAnimation
 }

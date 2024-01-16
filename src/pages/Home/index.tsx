@@ -25,53 +25,60 @@ import { getLocationUser } from "../../services/Location";
 import Lottie from "lottie-react-native";
 
 export const Home = ({ route }): JSX.Element => {
-  const [wheatherCurrent, setWheatherCurrent] = useState(null);
+  const [wheatherCurrent, setWheatherCurrent] = useState<{
+    list: Array<{
+      main: {
+        feels_like: string;
+        humidity: string;
+        temp: string;
+        temp_min: string;
+        temp_max: string;
+      };
+      wind: {
+        speed: string;
+      };
+      visibility: number;
+      description: string;
+    } | null>;
+    city: {
+      country: string;
+      name: string;
+    };
+  } | null>(null);
+
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [dataLocation, setDataLocation] = useState(true);
+  const [dataLocation, setDataLocation] = useState<{
+    latitude: string | number;
+    longitude: string | number;
+    name: string;
+    state: string;
+    country: string;
+    lat: string;
+    lon: string;
+  } | null>(null);
   const navigation = useNavigation();
   let { params } = route;
 
-  const getWheather = async (reload = false, viewLoading = true) => {
-    const dataLocation = await getDataLocation();
-    setDataLocation(dataLocation);
-
-    const data = await getDataWeather();
-
-    if (viewLoading) {
-      setLoading(true);
-    }
-
-    if (data == null || reload === true) {
-      const responseWheather = await getForecast(
-        dataLocation.latitude,
-        dataLocation.longitude
-      );
-
-      saveDataWeather(responseWheather);
-      setWheatherCurrent(responseWheather);
-    } else {
-      setWheatherCurrent(data);
-    }
-
-    if (viewLoading) {
-      setLoading(false);
-    }
-  };
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getWheather(true, false);
+    setRefreshing(false);
+  }, []);
 
   const goLocation = async () => {
     const dataLocation = await getDataLocation();
 
     showLocation({
-      latitude: dataLocation.latitude,
-      longitude: dataLocation.longitude,
-    });
+      latitude: dataLocation?.latitude,
+      longitude: dataLocation?.longitude,
+    } as never);
   };
 
   const getLocationCurrent = async () => {
     setLoading(true);
     const currentLocation = await getLocationUser();
-    await saveDataLocation(currentLocation.coords);
+    await saveDataLocation(currentLocation?.coords);
     await getWheather(true);
   };
 
@@ -81,7 +88,6 @@ export const Home = ({ route }): JSX.Element => {
     }
 
     const main = wheatherCurrent.list[0].weather[0].main;
-    const d = new Date();
 
     switch (main) {
       case "Clear":
@@ -127,11 +133,19 @@ export const Home = ({ route }): JSX.Element => {
     }
   };
 
-  const MiniItem = ({ title, desc, subDesc }: any) => {
+  const MiniItem = ({
+    title,
+    desc,
+    subDesc,
+  }: {
+    title: string;
+    desc: string;
+    subDesc?: string;
+  }) => {
     return (
       <Box
         width={"49%"}
-        bg={"rgba(0,0,0, .1)"}
+        bg={"base5"}
         p={"nano"}
         borderRadius={"nano"}
         mb={"cake"}
@@ -155,11 +169,33 @@ export const Home = ({ route }): JSX.Element => {
     );
   };
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await getWheather(true, false);
-    setRefreshing(false);
-  }, []);
+  const getWheather = async (reload = false, viewLoading = true) => {
+    const dataLocation = await getDataLocation();
+
+    setDataLocation(dataLocation);
+
+    const data = await getDataWeather();
+
+    if (viewLoading) {
+      setLoading(true);
+    }
+
+    if (data == null || reload === true) {
+      const responseWheather = await getForecast(
+        dataLocation?.latitude,
+        dataLocation?.longitude
+      );
+
+      saveDataWeather(responseWheather);
+      setWheatherCurrent(responseWheather);
+    } else {
+      setWheatherCurrent(data);
+    }
+
+    if (viewLoading) {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof params !== "undefined") {
@@ -193,40 +229,38 @@ export const Home = ({ route }): JSX.Element => {
               <Typography
                 textAlign={"center"}
                 mb={"cake"}
-                color={"rgba(255,255,255,.8)"}
+                color={"base6"}
                 variant={"medium"}
                 fontSize={14}
               >
-                BL Location
+                Simple Weather
               </Typography>
             </Box>
 
-            {!loading && (
-              <Box>
-                {dataLocation && dataLocation.name && (
-                  <Typography
-                    textAlign={"center"}
-                    mb={"cake"}
-                    color={"base"}
-                    fontSize={25}
-                  >
-                    {dataLocation.name} - {dataLocation.state},{" "}
-                    {dataLocation.country}
-                  </Typography>
-                )}
+            <Box>
+              {dataLocation && dataLocation.name && (
+                <Typography
+                  textAlign={"center"}
+                  mb={"cake"}
+                  color={"base"}
+                  fontSize={25}
+                >
+                  {dataLocation.name} - {dataLocation.state},{" "}
+                  {dataLocation.country}
+                </Typography>
+              )}
 
-                {(!dataLocation || !dataLocation.name) && wheatherCurrent && (
-                  <Typography
-                    textAlign={"center"}
-                    mb={"cake"}
-                    color={"base"}
-                    fontSize={25}
-                  >
-                    {wheatherCurrent.city.country}, {wheatherCurrent.city.name}
-                  </Typography>
-                )}
-              </Box>
-            )}
+              {(!dataLocation || !dataLocation.name) && wheatherCurrent && (
+                <Typography
+                  textAlign={"center"}
+                  mb={"cake"}
+                  color={"base"}
+                  fontSize={25}
+                >
+                  {wheatherCurrent.city.country}, {wheatherCurrent.city.name}
+                </Typography>
+              )}
+            </Box>
 
             {!loading && (
               <Box>
@@ -264,25 +298,32 @@ export const Home = ({ route }): JSX.Element => {
               >
                 <MiniItem
                   title={"Sensação"}
-                  desc={parseInt(wheatherCurrent.list[0].main.feels_like) + "º"}
+                  desc={
+                    parseInt(
+                      wheatherCurrent?.list[0]?.main.feels_like as string
+                    ) + "º"
+                  }
                 />
 
                 <MiniItem
                   title={"Umidade"}
-                  desc={wheatherCurrent.list[0].main.humidity + "%"}
+                  desc={wheatherCurrent?.list[0]?.main.humidity + "%"}
                 />
 
                 <MiniItem
                   title={"Vento"}
                   desc={(
-                    parseInt(wheatherCurrent.list[0].wind.speed) * 3.6
+                    parseInt(wheatherCurrent?.list[0]?.wind.speed as string) *
+                    3.6
                   ).toFixed(0)}
                   subDesc={"km/h"}
                 />
 
                 <MiniItem
                   title={"Visibilidade"}
-                  desc={(wheatherCurrent.list[0].visibility / 1000)
+                  desc={(
+                    (wheatherCurrent?.list[0]?.visibility as number) / 1000
+                  )
                     .toFixed(1)
                     .replace(".", ",")}
                   subDesc={"km"}
@@ -295,38 +336,38 @@ export const Home = ({ route }): JSX.Element => {
         </Box>
       </ScrollView>
 
-      {!loading && (
-        <Box
-          p={"xxxs"}
-          pb={"md"}
-          bg={"rgba(0,0,0, .1)"}
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-        >
-          <Touchable onPress={goLocation}>
+      <Box
+        p={"xxxs"}
+        pb={"md"}
+        bg={"base5"}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+      >
+        <Touchable onPress={goLocation}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("@assets/images/maps.png")}
+          />
+        </Touchable>
+
+        <Box flexDirection={"row"}>
+          <Touchable mr={"sm"} onPress={getLocationCurrent}>
             <Image
               style={{ width: 30, height: 30 }}
-              source={require("@assets/images/maps.png")}
+              source={require("@assets/images/scope.png")}
             />
           </Touchable>
 
-          <Box flexDirection={"row"}>
-            <Touchable mr={"sm"} onPress={getLocationCurrent}>
-              <Image
-                style={{ width: 30, height: 30 }}
-                source={require("@assets/images/scope.png")}
-              />
-            </Touchable>
-
-            <Touchable onPress={() => navigation.navigate("NewLocation")}>
-              <Image
-                style={{ width: 30, height: 30 }}
-                source={require("@assets/images/search.png")}
-              />
-            </Touchable>
-          </Box>
+          <Touchable
+            onPress={() => navigation.navigate("NewLocation" as never)}
+          >
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require("@assets/images/search.png")}
+            />
+          </Touchable>
         </Box>
-      )}
+      </Box>
     </LinearGradient>
   );
 };
