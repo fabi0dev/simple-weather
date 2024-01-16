@@ -20,6 +20,9 @@ interface ImgWeatherProps {
       };
       visibility: number;
       description: string;
+      weather: Array<{
+        description: string;
+      }>;
     } | null>;
     city: {
       country: string;
@@ -34,6 +37,7 @@ export const ImgWeather = ({
   loading,
 }: ImgWeatherProps): JSX.Element => {
   const wheather = wheatherCurrent?.list[0];
+  console.log(wheather);
 
   return (
     <Box>
@@ -71,7 +75,7 @@ export const ImgWeather = ({
           mb={"cake"}
           color={"base"}
         >
-          {capitalizeFont(wheather?.description)}
+          {capitalizeFont(wheather?.weather[0].description)}
         </Typography>
       )}
 

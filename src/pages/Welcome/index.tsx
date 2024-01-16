@@ -37,7 +37,7 @@ export const Welcome = (): JSX.Element => {
             color={"base3"}
             variant={"medium"}
           >
-            Olá, que bom te ver!
+            Simple Weather
           </Typography>
 
           <Typography
@@ -46,7 +46,7 @@ export const Welcome = (): JSX.Element => {
             fontSize={16}
             color={"grey02"}
           >
-            Simple Weather te ajuda saber a previsão do tempo facilmente.
+            Agora você pode saber a previsão do tempo facilmente!
           </Typography>
         </Box>
 

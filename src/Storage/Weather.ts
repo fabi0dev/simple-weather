@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocationObjectCoords } from "expo-location";
 
-const saveDataLocation = async (value:string) => {
+const saveDataLocation = async (value:LocationObjectCoords) => {
   return AsyncStorage.setItem(`DataLocation`,JSON.stringify(value));
 };
 

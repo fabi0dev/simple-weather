@@ -76,6 +76,7 @@ export const Home = ({ route }): JSX.Element => {
   };
 
   const getLocationCurrent = async () => {
+    setLoading(true);
     const currentLocation = await getLocationUser();
     await saveDataLocation(currentLocation?.coords);
     await getWheather(true);
