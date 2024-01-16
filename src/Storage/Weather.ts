@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const saveDataLocation = async (value) => {
+const saveDataLocation = async (value:string) => {
   return AsyncStorage.setItem(`DataLocation`,JSON.stringify(value));
 };
 
@@ -18,7 +18,7 @@ const getDataLocation = async ():Promise<{
 };
 
 
-const saveDataWeather = async (value) => {
+const saveDataWeather = async (value:string) => {
   return AsyncStorage.setItem(`DataWeather`,JSON.stringify(value));
 };
 

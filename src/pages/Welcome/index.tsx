@@ -46,7 +46,7 @@ export const Welcome = (): JSX.Element => {
             fontSize={16}
             color={"grey02"}
           >
-            Agora você tem a previsão do tempo facilmente
+            Simple Weather te ajuda saber a previsão do tempo facilmente.
           </Typography>
         </Box>
 

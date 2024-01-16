@@ -1,4 +1,4 @@
-const getColorLinearBg = (main) => {
+const getColorLinearBg = (main:string) => {
   if (main) {
     const d = new Date();
 
@@ -24,7 +24,7 @@ const getColorLinearBg = (main) => {
   }
 };
 
-const getImgWeather = (main) => {
+const getImgWeather = (main:string) => {
   let date = new Date();
 
   if (!main) {

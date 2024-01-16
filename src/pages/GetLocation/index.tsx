@@ -14,7 +14,7 @@ export const GetLocation = (): JSX.Element => {
   const [loadingGetLocation, setLoadingGetLocation] = useState(false);
 
   const getLocationUser = async () => {
-    setLogSearch("Buscando sua região...");
+    setLogSearch("Aguarde um instante...");
     setLoadingGetLocation(true);
 
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -53,15 +53,17 @@ export const GetLocation = (): JSX.Element => {
           />
         </Box>
 
-        <Typography
-          textAlign={"center"}
-          fontWeight={"bold"}
-          fontSize={30}
-          color={"base3"}
-          variant={"medium"}
-        >
-          Encontrar região
-        </Typography>
+        {!loadingGetLocation && (
+          <Typography
+            textAlign={"center"}
+            fontWeight={"bold"}
+            fontSize={30}
+            color={"base3"}
+            variant={"medium"}
+          >
+            Encontrar região
+          </Typography>
+        )}
 
         <Typography
           textAlign={"center"}
@@ -69,7 +71,7 @@ export const GetLocation = (): JSX.Element => {
           fontSize={16}
           color={"grey02"}
         >
-          {logSearch || "Para começar devemos encontrar sua região"}
+          {logSearch || "Para começar devemos encontrar sua região."}
         </Typography>
 
         <Box mt={"xl"}>

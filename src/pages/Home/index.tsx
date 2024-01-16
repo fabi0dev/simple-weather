@@ -60,33 +60,6 @@ export const Home = ({ route }): JSX.Element => {
   const navigation = useNavigation();
   let { params } = route;
 
-  const getWheather = async (reload = false, viewLoading = true) => {
-    const dataLocation = await getDataLocation();
-    setDataLocation(dataLocation);
-
-    const data = await getDataWeather();
-
-    if (viewLoading) {
-      setLoading(true);
-    }
-
-    if (data == null || reload === true) {
-      const responseWheather = await getForecast(
-        dataLocation?.latitude,
-        dataLocation?.longitude
-      );
-
-      saveDataWeather(responseWheather);
-      setWheatherCurrent(responseWheather);
-    } else {
-      setWheatherCurrent(data);
-    }
-
-    if (viewLoading) {
-      setLoading(false);
-    }
-  };
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await getWheather(true, false);
@@ -195,6 +168,34 @@ export const Home = ({ route }): JSX.Element => {
     );
   };
 
+  const getWheather = async (reload = false, viewLoading = true) => {
+    const dataLocation = await getDataLocation();
+
+    setDataLocation(dataLocation);
+
+    const data = await getDataWeather();
+
+    if (viewLoading) {
+      setLoading(true);
+    }
+
+    if (data == null || reload === true) {
+      const responseWheather = await getForecast(
+        dataLocation?.latitude,
+        dataLocation?.longitude
+      );
+
+      saveDataWeather(responseWheather);
+      setWheatherCurrent(responseWheather);
+    } else {
+      setWheatherCurrent(data);
+    }
+
+    if (viewLoading) {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (typeof params !== "undefined") {
       delete params.reload;
@@ -231,7 +232,7 @@ export const Home = ({ route }): JSX.Element => {
                 variant={"medium"}
                 fontSize={14}
               >
-                BL Location
+                Simple Weather
               </Typography>
             </Box>
 

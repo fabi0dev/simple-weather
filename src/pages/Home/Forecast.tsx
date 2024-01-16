@@ -1,7 +1,7 @@
 import { Box } from "@components/Box";
 import { Typography } from "@components/Typography";
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image } from "react-native";
 
 interface ForecastProps {
   wheatherCurrent: any;
