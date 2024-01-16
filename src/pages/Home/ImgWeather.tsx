@@ -37,7 +37,6 @@ export const ImgWeather = ({
   loading,
 }: ImgWeatherProps): JSX.Element => {
   const wheather = wheatherCurrent?.list[0];
-  console.log(wheather);
 
   return (
     <Box>

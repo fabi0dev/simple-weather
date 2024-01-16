@@ -42,7 +42,7 @@ export const InputText: React.FC<InputTextProps> = ({
       <Box
         width={width}
         height={heigth}
-        borderRadius={"xi"}
+        borderRadius={"default"}
         flexDirection={"row"}
         alignItems={"center"}
         bg={bg || "base"}

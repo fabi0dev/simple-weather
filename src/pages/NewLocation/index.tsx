@@ -108,7 +108,7 @@ export const NewLocation = (): JSX.Element => {
             colors={getColorLinearBg(weather[0].main)}
             style={{
               flex: 1,
-              borderRadius: 16,
+              borderRadius: 8,
               padding: 20,
               paddingTop: 15,
               paddingBottom: 15,
@@ -121,11 +121,11 @@ export const NewLocation = (): JSX.Element => {
             >
               <Box>
                 <Box mb={"xx"}>
-                  <Typography color={"base"} variant={"medium"} fontSize={20}>
+                  <Typography color={"base2"} variant="medium" fontSize={12}>
                     Meu Local
                   </Typography>
 
-                  <Typography color={"base2"} fontSize={15}>
+                  <Typography color={"base"} variant="medium" fontSize={20}>
                     {dataWeather.city.name}
                   </Typography>
                 </Box>
@@ -143,7 +143,7 @@ export const NewLocation = (): JSX.Element => {
                     {parseInt(main.temp)}ºc
                   </Typography>
 
-                  <Typography variant="medium" fontSize={14} color={"base"}>
+                  <Typography fontSize={14} variant="medium" color={"base"}>
                     Max.:{parseInt(main.temp_max)}º ~ Min.:
                     {parseInt(main.temp_min)}º
                   </Typography>
